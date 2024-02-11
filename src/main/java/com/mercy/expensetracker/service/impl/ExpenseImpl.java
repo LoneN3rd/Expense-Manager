@@ -8,7 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,13 +31,13 @@ public class ExpenseImpl implements ExpenseService {
 
     @Override
     public List<Expense> getExpenseById(Long id) {
-        List<Expense> expenseList = new ArrayList<>();
+        //List<Expense> expenseList = new ArrayList<>();
         Optional<Expense> expense = expenseRepository.findByIdAndIsDeleted(id, 0);
-        if(expense.isPresent()){
-            expenseList.add(expense.get());
-            return expenseList;
+        if(expense.isPresent()) {
+            //expenseList.add(expense.stream().toList());
+            return expense.stream().toList();
         } else {
-            throw new ResourceException("Expense with id '"+ id +"' not found");
+            throw new ResourceException("Expense with id '" + id + "' not found");
         }
     }
 
@@ -50,8 +55,10 @@ public class ExpenseImpl implements ExpenseService {
     public void deleteExpenseById(Long id) throws ResourceException {
         Optional<Expense> expense = this.getSingleExpenseById(id);
         if(expense.isPresent()){
-           Expense expense_ =  expense.get();
-           expense_.setIsDeleted(1);
+            System.out.println("expense found "+ expense.get().getId());
+            Expense expense_ =  expense.get();
+            expense_.setIsDeleted(1);
+            expenseRepository.save(expense_);
         } else {
             throw new ResourceException("Expense with id '"+ id +"' not found");
         }
@@ -70,5 +77,21 @@ public class ExpenseImpl implements ExpenseService {
         } else {
             throw new ResourceException("Expense with id '"+ id +"' not found");
         }
+    }
+
+    @Override
+    public List<Expense> getExpenseByName(String name, Pageable page) {
+        return expenseRepository.findByIsDeletedAndNameContaining(0, name, page).toList();
+    }
+
+    @Override
+    public List<Expense> getExpenseByDateCreated(String from, String to, Pageable page) {
+        ZonedDateTime z_from = ZonedDateTime.of(LocalDate.parse(from), LocalTime.MIDNIGHT, ZoneId.systemDefault());
+        ZonedDateTime z_to = ZonedDateTime.of(LocalDate.parse(to), LocalTime.MIDNIGHT, ZoneId.systemDefault());
+        ZonedDateTime z_to_plus_one = z_to.plusDays(1);
+        Date filter_from = Date.from(z_from.toInstant());
+        Date filter_to = Date.from(z_to_plus_one.toInstant());
+        System.out.println("Getting bills created on "+ filter_from +" to "+ filter_to);
+        return expenseRepository.findByIsDeletedAndCreatedOnBetween(0, filter_from, filter_to, page).toList();
     }
 }

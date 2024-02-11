@@ -20,4 +20,8 @@ public interface ExpenseService {
     void deleteExpenseById(Long id) throws ResourceException;
 
     Expense updateExpense(Expense expense, Long id) throws ResourceException;
+
+    List<Expense> getExpenseByName(String name, Pageable page);
+
+    List<Expense> getExpenseByDateCreated(String from, String to, Pageable page);
 }

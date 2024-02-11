@@ -23,7 +23,7 @@ public class ExpenseController {
         return new ResponseEntity<>(expenseService.getAllExpenses(page), HttpStatus.OK);
     }
 
-    @GetMapping("/expenses/{id}")
+    @GetMapping("/expenses/id/{id}")
     public ResponseEntity<?> getExpenseById(@PathVariable Long id){
         List<Expense> expenses = expenseService.getExpenseById(id);
         return new ResponseEntity<>(expenses, !expenses.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
@@ -33,6 +33,18 @@ public class ExpenseController {
     public ResponseEntity<?> queryExpenseById(@RequestParam Long id){
         List<Expense> expenses = expenseService.getExpenseById(id);
         return new ResponseEntity<>(expenses, !expenses.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/expenses/name/{name}")
+    public ResponseEntity<?> queryExpenseByName(@PathVariable String name, Pageable page){
+        List<Expense> expenses = expenseService.getExpenseByName(name, page);
+        return new ResponseEntity<>(expenses, HttpStatus.OK);
+    }
+
+    @GetMapping("/expenses/{from}/{to}")
+    public ResponseEntity<?> queryExpenseByDate(@PathVariable String from, @PathVariable String to, Pageable page){
+        List<Expense> expenses = expenseService.getExpenseByDateCreated(from, to, page);
+        return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
 
     @PostMapping("/create")
