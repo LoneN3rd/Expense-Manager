@@ -1,6 +1,6 @@
 package com.mercy.expensetracker.service.impl;
 
-import com.mercy.expensetracker.exception.ResourceException;
+import com.mercy.expensetracker.exception.ResourceNotFoundException;
 import com.mercy.expensetracker.model.Expense;
 import com.mercy.expensetracker.repository.ExpenseRepository;
 import com.mercy.expensetracker.service.ExpenseService;
@@ -36,7 +36,7 @@ public class ExpenseImpl implements ExpenseService {
             //expenseList.add(expense.stream().toList());
             return expense.stream().toList();
         } else {
-            throw new ResourceException("Expense with id '" + id + "' not found");
+            throw new ResourceNotFoundException("Expense with id '" + id + "' not found");
         }
     }
 
@@ -51,7 +51,7 @@ public class ExpenseImpl implements ExpenseService {
     }
 
     @Override
-    public void deleteExpenseById(Long id) throws ResourceException {
+    public void deleteExpenseById(Long id) throws ResourceNotFoundException {
         Optional<Expense> expense = this.getSingleExpenseById(id);
         if(expense.isPresent()){
             System.out.println("expense found "+ expense.get().getId());
@@ -59,12 +59,12 @@ public class ExpenseImpl implements ExpenseService {
             expense_.setIsDeleted(1);
             expenseRepository.save(expense_);
         } else {
-            throw new ResourceException("Expense with id '"+ id +"' not found");
+            throw new ResourceNotFoundException("Expense with id '"+ id +"' not found");
         }
     }
 
     @Override
-    public Expense updateExpense(Expense expense, Long id) throws ResourceException {
+    public Expense updateExpense(Expense expense, Long id) throws ResourceNotFoundException {
         Optional<Expense> existingExpense = this.getSingleExpenseById(id);
         if(existingExpense.isPresent()){
             Expense existingExpense_ = existingExpense.get();
@@ -74,7 +74,7 @@ public class ExpenseImpl implements ExpenseService {
             existingExpense_.setCategory(expense.getCategory() != null ? expense.getCategory() : existingExpense_.getCategory());
             return expenseRepository.save(existingExpense_);
         } else {
-            throw new ResourceException("Expense with id '"+ id +"' not found");
+            throw new ResourceNotFoundException("Expense with id '"+ id +"' not found");
         }
     }
 

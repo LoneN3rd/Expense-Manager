@@ -3,6 +3,7 @@ package com.mercy.expensetracker.controller;
 import com.mercy.expensetracker.model.User;
 import com.mercy.expensetracker.model.UserModel;
 import com.mercy.expensetracker.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@RequestBody UserModel user){
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserModel user){
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 }

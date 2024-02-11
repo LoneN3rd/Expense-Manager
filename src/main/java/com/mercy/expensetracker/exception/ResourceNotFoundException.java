@@ -1,10 +1,10 @@
 package com.mercy.expensetracker.exception;
 
-public class ResourceException extends RuntimeException{
+public class ResourceNotFoundException extends RuntimeException{
 
     private static final long serialVersionUID = 1L;
 
-    public ResourceException(String message) {
+    public ResourceNotFoundException(String message) {
         super(message);
     }
 }

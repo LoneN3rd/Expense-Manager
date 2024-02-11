@@ -1,12 +1,10 @@
 package com.mercy.expensetracker.service;
 
-import com.mercy.expensetracker.exception.ResourceException;
+import com.mercy.expensetracker.exception.ResourceNotFoundException;
 import com.mercy.expensetracker.model.Expense;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +18,9 @@ public interface ExpenseService {
 
     Expense createExpense(Expense expense);
 
-    void deleteExpenseById(Long id) throws ResourceException;
+    void deleteExpenseById(Long id) throws ResourceNotFoundException;
 
-    Expense updateExpense(Expense expense, Long id) throws ResourceException;
+    Expense updateExpense(Expense expense, Long id) throws ResourceNotFoundException;
 
     List<Expense> getExpenseByName(String name, Pageable page);
 
