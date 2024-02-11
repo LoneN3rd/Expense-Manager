@@ -14,35 +14,35 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/expenses")
 public class ExpenseController {
 
     @Autowired
-    ExpenseService expenseService;
+    private ExpenseService expenseService;
 
-    @GetMapping("/expenses/all")
+    @GetMapping("/all")
     public ResponseEntity<?> getAllExpenses(Pageable page){
         return new ResponseEntity<>(expenseService.getAllExpenses(page), HttpStatus.OK);
     }
 
-    @GetMapping("/expenses/id/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<?> getExpenseById(@PathVariable Long id){
         List<Expense> expenses = expenseService.getExpenseById(id);
         return new ResponseEntity<>(expenses, !expenses.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/expenses/id")
+    @GetMapping("/id")
     public ResponseEntity<?> queryExpenseById(@RequestParam Long id){
         List<Expense> expenses = expenseService.getExpenseById(id);
         return new ResponseEntity<>(expenses, !expenses.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/expenses/name/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<?> queryExpenseByName(@PathVariable String name, Pageable page){
         return new ResponseEntity<>(expenseService.getExpenseByName(name, page), HttpStatus.OK);
     }
 
-    @GetMapping("/expenses/date")
+    @GetMapping("/date")
     public ResponseEntity<?> queryExpenseByDate(@RequestParam(required = false) LocalDate from, @RequestParam(required = false) LocalDate to, Pageable page){
         return new ResponseEntity<>(expenseService.getExpenseByDateCreated(from, to, page), HttpStatus.OK);
     }
@@ -65,7 +65,7 @@ public class ExpenseController {
         }
     }
 
-    @PutMapping("/expenses/del/{id}")
+    @PutMapping("/del/{id}")
     public ResponseEntity<String> deleteExpense(@PathVariable Long id) {
         try {
             expenseService.deleteExpenseById(id);
