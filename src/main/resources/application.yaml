@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:8889/expense_tracker?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true&verifyServerCertificate=false
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+app:
+  name: ExpenseTracker
+  version: 0.0.1
+server:
+#  port: 9090
+  servlet:
+    context-path: /expense-tracker/api/v1
