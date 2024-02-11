@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -86,8 +85,8 @@ public class ExpenseImpl implements ExpenseService {
 
     @Override
     public List<Expense> getExpenseByDateCreated(String from, String to, Pageable page) {
-        ZonedDateTime z_from = ZonedDateTime.of(LocalDate.parse(from), LocalTime.MIDNIGHT, ZoneId.systemDefault());
-        ZonedDateTime z_to = ZonedDateTime.of(LocalDate.parse(to), LocalTime.MIDNIGHT, ZoneId.systemDefault());
+        ZonedDateTime z_from = ZonedDateTime.of(from != null ? LocalDate.parse(from) : LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.systemDefault());
+        ZonedDateTime z_to = to != null ? ZonedDateTime.of(LocalDate.parse(to), LocalTime.MIDNIGHT, ZoneId.systemDefault()) : z_from;
         ZonedDateTime z_to_plus_one = z_to.plusDays(1);
         Date filter_from = Date.from(z_from.toInstant());
         Date filter_to = Date.from(z_to_plus_one.toInstant());

@@ -41,8 +41,8 @@ public class ExpenseController {
         return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
 
-    @GetMapping("/expenses/{from}/{to}")
-    public ResponseEntity<?> queryExpenseByDate(@PathVariable String from, @PathVariable String to, Pageable page){
+    @GetMapping("/expenses/date")
+    public ResponseEntity<?> queryExpenseByDate(@RequestParam(required = false) String from, @RequestParam(required = false) String to, Pageable page){
         List<Expense> expenses = expenseService.getExpenseByDateCreated(from, to, page);
         return new ResponseEntity<>(expenses, HttpStatus.OK);
     }
