@@ -84,9 +84,9 @@ public class ExpenseImpl implements ExpenseService {
     }
 
     @Override
-    public List<Expense> getExpenseByDateCreated(String from, String to, Pageable page) {
-        ZonedDateTime z_from = ZonedDateTime.of(from != null ? LocalDate.parse(from) : LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.systemDefault());
-        ZonedDateTime z_to = to != null ? ZonedDateTime.of(LocalDate.parse(to), LocalTime.MIDNIGHT, ZoneId.systemDefault()) : z_from;
+    public List<Expense> getExpenseByDateCreated(LocalDate from, LocalDate to, Pageable page) {
+        ZonedDateTime z_from = ZonedDateTime.of(from != null ? from : LocalDate.now(), LocalTime.MIDNIGHT, ZoneId.systemDefault());
+        ZonedDateTime z_to = to != null ? ZonedDateTime.of(to, LocalTime.MIDNIGHT, ZoneId.systemDefault()) : z_from;
         ZonedDateTime z_to_plus_one = z_to.plusDays(1);
         Date filter_from = Date.from(z_from.toInstant());
         Date filter_to = Date.from(z_to_plus_one.toInstant());

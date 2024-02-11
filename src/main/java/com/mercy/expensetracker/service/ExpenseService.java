@@ -4,6 +4,9 @@ import com.mercy.expensetracker.exception.ResourceException;
 import com.mercy.expensetracker.model.Expense;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,5 +26,5 @@ public interface ExpenseService {
 
     List<Expense> getExpenseByName(String name, Pageable page);
 
-    List<Expense> getExpenseByDateCreated(String from, String to, Pageable page);
+    List<Expense> getExpenseByDateCreated(LocalDate from, LocalDate to, Pageable page);
 }

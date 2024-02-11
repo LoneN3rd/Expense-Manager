@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -37,14 +39,12 @@ public class ExpenseController {
 
     @GetMapping("/expenses/name/{name}")
     public ResponseEntity<?> queryExpenseByName(@PathVariable String name, Pageable page){
-        List<Expense> expenses = expenseService.getExpenseByName(name, page);
-        return new ResponseEntity<>(expenses, HttpStatus.OK);
+        return new ResponseEntity<>(expenseService.getExpenseByName(name, page), HttpStatus.OK);
     }
 
     @GetMapping("/expenses/date")
-    public ResponseEntity<?> queryExpenseByDate(@RequestParam(required = false) String from, @RequestParam(required = false) String to, Pageable page){
-        List<Expense> expenses = expenseService.getExpenseByDateCreated(from, to, page);
-        return new ResponseEntity<>(expenses, HttpStatus.OK);
+    public ResponseEntity<?> queryExpenseByDate(@RequestParam(required = false) LocalDate from, @RequestParam(required = false) LocalDate to, Pageable page){
+        return new ResponseEntity<>(expenseService.getExpenseByDateCreated(from, to, page), HttpStatus.OK);
     }
 
     @PostMapping("/create")
